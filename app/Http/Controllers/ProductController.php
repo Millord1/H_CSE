@@ -21,7 +21,8 @@ class ProductController extends Controller
     public function create(string $offerId): View
     {
         $offer = Offer::findOrFail($offerId);
-        $product = new Product();
+        $product = new Product;
+
         return view('products.create', compact('offer', 'product'));
     }
 
@@ -34,7 +35,7 @@ class ProductController extends Controller
             'sku' => ['required', 'string', 'max:255', 'unique:products,sku'],
             'image' => ['required', 'file'],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
         ]);
 
         $product = new Product($data);
@@ -54,6 +55,7 @@ class ProductController extends Controller
     {
         $offer = Offer::findOrFail($offerId);
         $product = $offer->products()->findOrFail($productId);
+
         return view('products.edit', compact('offer', 'product'));
     }
 
@@ -64,10 +66,10 @@ class ProductController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255', 'unique:products,sku,' . $product->id],
+            'sku' => ['required', 'string', 'max:255', 'unique:products,sku,'.$product->id],
             'image' => ['nullable', 'file'],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
         ]);
 
         $product->update($data);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
-    static $states = [
+    public static $states = [
         'draft' => 'Brouillon',
         'published' => 'Publié',
         'hidden' => 'Masqué',
