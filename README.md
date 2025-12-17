@@ -116,3 +116,12 @@ Tests et qualité
 - Lancer les tests: phpunit ou php artisan test
 - Lancer PHPStan: vendor/bin/phpstan analyse --level=8 (ajustez le niveau si vous visez plus)
 
+# Implémentations
+## Code Quality
+- En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la suite
+
+## Sécurisation des Inputs
+- Pour commencer la refactorisation, j'ai ensuite créé des Form Requests pour les Offer et Product Controllers en améliorant la validation des images et en encapsulant donc la logique de Validation dans des fichiers à part, ce qui allège considérablement les Controllers
+
+### Création des tests de Validation
+- Suite à l'implémentation et au changement des Form Requests, j'ai naturellement créé des tests pour ces nouvelles classes

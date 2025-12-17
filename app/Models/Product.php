@@ -5,6 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $offer_id
+ * @property string $name
+ * @property string $sku
+ * @property string|null $image
+ * @property float $price
+ * @property string $state
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Offer $offer
+ */
 class Product extends Model
 {
     /** @var array<string,  string> */
