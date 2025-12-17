@@ -21,7 +21,8 @@ class ProductController extends Controller
     public function create(string $offerId): View
     {
         $offer = Offer::findOrFail($offerId);
-        $product = new Product();
+        $product = new Product;
+
         return view('products.create', compact('offer', 'product'));
     }
 
@@ -34,12 +35,10 @@ class ProductController extends Controller
             'sku' => ['required', 'string', 'max:255', 'unique:products,sku'],
             'image' => ['required', 'file'],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
         ]);
 
-        $product = new Product($data);
-        $product->offer_id = $offer->id;
-        $product->save();
+        $product = $offer->products()->create($data);
 
         if ($request->hasFile('image')) {
             $product->update(['image' => $request->file('image')->store('products', ['disk' => 'public'])]);
@@ -54,20 +53,22 @@ class ProductController extends Controller
     {
         $offer = Offer::findOrFail($offerId);
         $product = $offer->products()->findOrFail($productId);
+
         return view('products.edit', compact('offer', 'product'));
     }
 
     public function update(Request $request, string $offerId, string $productId): RedirectResponse
     {
         $offer = Offer::findOrFail($offerId);
+        /** @var Product $product */
         $product = $offer->products()->findOrFail($productId);
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255', 'unique:products,sku,' . $product->id],
+            'sku' => ['required', 'string', 'max:255', 'unique:products,sku,'.$product->id],
             'image' => ['nullable', 'file'],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
         ]);
 
         $product->update($data);

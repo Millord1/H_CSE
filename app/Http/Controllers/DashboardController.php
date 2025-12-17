@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Offer;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         if ($request->state) {
             $offers = Offer::ofState($request->state);

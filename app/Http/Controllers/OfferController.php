@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Offer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
 class OfferController extends Controller
 {
-    public function create()
+    public function create(): View
     {
         return view('offers.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -33,14 +35,14 @@ class OfferController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function edit($offerId)
+    public function edit(string $offerId): View
     {
         return view('offers.edit', [
             'offer' => Offer::find($offerId),
         ]);
     }
 
-    public function update(Request $request, $offerId)
+    public function update(Request $request, string $offerId): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -50,23 +52,26 @@ class OfferController extends Controller
             'state' => ['required', 'string', 'in:draft,published,hidden'],
         ]);
 
-        Offer::find($offerId)->update($request->all('name', 'slug', 'description', 'state'));
+        $offer = Offer::findOrFail($offerId);
+        $offer->update($request->all('name', 'slug', 'description', 'state'));
 
         if ($request->hasFile('image')) {
-            Offer::find($offerId)->update(['image' => $request->file('image')->store('offers', ['disk' => 'public'])]);
+            $offer->update([
+                'image' => $request->file('image')->store('offers', ['disk' => 'public'])
+            ]);
         }
 
         return redirect()->route('dashboard');
     }
 
-    public function destroy($offerId)
+    public function destroy(string $offerId): RedirectResponse
     {
         Offer::where('id', $offerId)->delete();
 
         return redirect()->route('dashboard');
     }
 
-    public function show(string $offerId)
+    public function show(string $offerId): View
     {
         $offer = Offer::with('products')->findOrFail($offerId);
 
