@@ -30,18 +30,13 @@ class ProductController extends Controller
     {
         $offer = Offer::findOrFail($offerId);
 
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255', 'unique:products,sku'],
-            'image' => ['required', 'file'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
-        ]);
-
-        $product = $offer->products()->create($data);
+        /** @var Product $product */
+        $product = $offer->products()->create($request->safe()->except('image'));
 
         if ($request->hasFile('image')) {
-            $product->update(['image' => $request->file('image')->store('products', ['disk' => 'public'])]);
+            // Safe storage with random name (store)
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image' => $path]);
         }
 
         return redirect()
@@ -63,18 +58,12 @@ class ProductController extends Controller
         /** @var Product $product */
         $product = $offer->products()->findOrFail($productId);
 
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'sku' => ['required', 'string', 'max:255', 'unique:products,sku,'.$product->id],
-            'image' => ['nullable', 'file'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
-        ]);
-
-        $product->update($data);
+        $product->update($request->safe()->except('image'));
 
         if ($request->hasFile('image')) {
-            $product->update(['image' => $request->file('image')->store('products', ['disk' => 'public'])]);
+            // Safe storage with random name (store)
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image' => $path]);
         }
 
         return redirect()
