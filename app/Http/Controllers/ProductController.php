@@ -38,9 +38,7 @@ class ProductController extends Controller
             'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
         ]);
 
-        $product = new Product($data);
-        $product->offer_id = $offer->id;
-        $product->save();
+        $product = $offer->products()->create($data);
 
         if ($request->hasFile('image')) {
             $product->update(['image' => $request->file('image')->store('products', ['disk' => 'public'])]);
@@ -62,6 +60,7 @@ class ProductController extends Controller
     public function update(Request $request, string $offerId, string $productId): RedirectResponse
     {
         $offer = Offer::findOrFail($offerId);
+        /** @var Product $product */
         $product = $offer->products()->findOrFail($productId);
 
         $data = $request->validate([
