@@ -6,7 +6,6 @@ use App\Http\Requests\Offer\StoreOfferRequest;
 use App\Http\Requests\Offer\UpdateOfferRequest;
 use App\Models\Offer;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 
 class OfferController extends Controller
@@ -19,6 +18,7 @@ class OfferController extends Controller
     public function store(StoreOfferRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        // Safe storage with random name (store)
         $data['image'] = $request->file('image')->store('offers', ['disk' => 'public']);
 
         Offer::create($data);
