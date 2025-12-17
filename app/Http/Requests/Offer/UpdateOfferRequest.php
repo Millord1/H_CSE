@@ -32,7 +32,7 @@ class UpdateOfferRequest extends FormRequest
                 Rule::unique('offers')->ignore($this->route('offer')),
             ],
             'image' => [
-                'required',
+                'sometimes',
                 'image',
                 'file',
                 'mimes:jpeg,png,jpg,webp',

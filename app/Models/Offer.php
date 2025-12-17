@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -35,6 +36,15 @@ class Offer extends Model
         'description',
         'state',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function ($offer) {
+            if ($offer->image) {
+                Storage::disk('public')->delete($offer->image);
+            }
+        });
+    }
 
     /**
      * @param  Builder<Offer>  $query
