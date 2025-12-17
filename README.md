@@ -118,10 +118,19 @@ Tests et qualité
 
 # Implémentations
 ## Code Quality
-- En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la suite
+- En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la 
+
+# Refactorisation
+- Début de la refactorisation en utilisant les outils basiques de Laravel, Form Requests, Resources, tests d'intégration, gestion de la suppression des images sur le Model (plus robuste que via le Controller)
 
 ## Sécurisation des Inputs
 - Pour commencer la refactorisation, j'ai ensuite créé des Form Requests pour les Offer et Product Controllers en améliorant la validation des images et en encapsulant donc la logique de Validation dans des fichiers à part, ce qui allège considérablement les Controllers
 
-### Création des tests de Validation
-- Suite à l'implémentation et au changement des Form Requests, j'ai naturellement créé des tests pour ces nouvelles classes
+## Création des Factories
+
+## Gestion de la suppression des images
+- Dans un soucis de robustesse, j'ai préferé gérer la suppression des images depuis la function static booted() sur les models directement, afin d'éviter qu'une image persiste après la suppression de l'objet, donc plus robuste que sur la méthode destroy() du Controller
+
+## Création des tests d'intégration
+- Légère refactorisation du test existant en utilisant la fonction setUp() (DRY)
+- Suite à l'implémentation et au changement des Form Requests, les tests d'intégrations étaient indispensables ici

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -37,6 +38,15 @@ class Product extends Model
         'price',
         'state',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function($product){
+            if($product->image){
+                Storage::disk('public')->delete($product->image);
+            }
+        });
+    }
 
     /**
      * @return BelongsTo<Offer, $this>
