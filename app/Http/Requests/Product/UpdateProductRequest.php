@@ -23,7 +23,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $productId = $this->route('productId'); 
+        $productId = $this->route('productId');
 
         return [
             'name' => ['required', 'string', 'max:255'],
@@ -34,7 +34,7 @@ class UpdateProductRequest extends FormRequest
                 Rule::unique('products')->ignore($productId),
             ],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
             'image' => [
                 'nullable',
                 'file',

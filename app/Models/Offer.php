@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Database\Factories\OfferFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Offer extends Model
 {
+    /** @use HasFactory<OfferFactory> */
     use HasFactory;
 
     /** @var array<string, string> */
@@ -35,11 +37,11 @@ class Offer extends Model
     ];
 
     /**
-     * @param Builder<Offer> $query
-     * @param string $state
+     * @param  Builder<Offer>  $query
+     * @param  string  $state
      * @return Builder<Offer>
      */
-    public function scopeOfState( $query, $state)
+    public function scopeOfState($query, $state)
     {
         return $query->where('state', $state);
     }

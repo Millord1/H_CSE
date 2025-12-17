@@ -118,7 +118,17 @@ Tests et qualité
 
 # Implémentations
 ## Code Quality
-- En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la 
+- En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la suite
+
+- PHPStan:
+```bash
+php vendor/bin/phpstan analyse --no-progress --debug --memory-limit=512M
+```
+
+- Pint:
+```bash
+./vendore/bin/pint
+```
 
 # Refactorisation
 - Début de la refactorisation en utilisant les outils basiques de Laravel, Form Requests, Resources, tests d'intégration, gestion de la suppression des images sur le Model (plus robuste que via le Controller)

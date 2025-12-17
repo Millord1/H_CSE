@@ -21,14 +21,14 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'offer_id'    => Offer::factory(), 
-            'name'        => $this->faker->words(3, true),
-            'sku'         => strtoupper($this->faker->unique()->bothify('PROD-####-????')),
-            'image'       => 'products/fake-image.jpg',
-            'price'       => $this->faker->randomFloat(2, 10, 1000),
-            'state'       => $this->faker->randomElement(['available', 'out_of_stock', 'discontinued']),
-            'created_at'  => now(),
-            'updated_at'  => now(),
+            'offer_id' => Offer::factory(),
+            'name' => $this->faker->words(3, true),
+            'sku' => strtoupper($this->faker->unique()->bothify('PROD-####-????')),
+            'image' => 'products/fake-image.jpg',
+            'price' => $this->faker->randomFloat(2, 10, 1000),
+            'state' => $this->faker->randomElement(['available', 'out_of_stock', 'discontinued']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 

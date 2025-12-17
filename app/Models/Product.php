@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,9 +22,10 @@ use Illuminate\Support\Facades\Storage;
  */
 class Product extends Model
 {
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
 
-    /** @var array<string,  string> */
+    /** @var array<string, string> */
     public static $states = [
         'draft' => 'Brouillon',
         'published' => 'Publié',
@@ -41,8 +43,8 @@ class Product extends Model
 
     protected static function booted(): void
     {
-        static::deleting(function($product){
-            if($product->image){
+        static::deleting(function ($product) {
+            if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
         });

@@ -18,9 +18,9 @@ class ProfileTest extends TestCase
     public function test_profile_information_can_be_updated(): void
     {
         $response = $this->patch('/profile', [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
 
         $response
             ->assertSessionHasNoErrors()
@@ -36,9 +36,9 @@ class ProfileTest extends TestCase
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
     {
         $response = $this->patch('/profile', [
-                'name' => 'Test User',
-                'email' => $this->user->email,
-            ]);
+            'name' => 'Test User',
+            'email' => $this->user->email,
+        ]);
 
         $response
             ->assertSessionHasNoErrors()
@@ -50,8 +50,8 @@ class ProfileTest extends TestCase
     public function test_user_can_delete_their_account(): void
     {
         $response = $this->delete('/profile', [
-                'password' => 'password',
-            ]);
+            'password' => 'password',
+        ]);
 
         $response
             ->assertSessionHasNoErrors()

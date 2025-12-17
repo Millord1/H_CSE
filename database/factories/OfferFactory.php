@@ -19,14 +19,15 @@ class OfferFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->sentence(3);
+
         return [
             'name' => $name,
             'slug' => Str::slug($name),
             'description' => $this->faker->paragraph(),
-            'image'       => 'offers/fake-image.jpg',
-            'state'       => $this->faker->randomElement(['draft', 'published', 'archived']),
-            'created_at'  => now(),
-            'updated_at'  => now(),
+            'image' => 'offers/fake-image.jpg',
+            'state' => $this->faker->randomElement(['draft', 'published', 'archived']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 

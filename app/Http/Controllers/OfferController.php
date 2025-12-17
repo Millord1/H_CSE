@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Offer\StoreOfferRequest;
 use App\Http\Requests\Offer\UpdateOfferRequest;
 use App\Models\Offer;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class OfferController extends Controller
 {
@@ -40,7 +40,7 @@ class OfferController extends Controller
 
         if ($request->hasFile('image')) {
             $offer->update([
-                'image' => $request->file('image')->store('offers', ['disk' => 'public'])
+                'image' => $request->file('image')->store('offers', ['disk' => 'public']),
             ]);
         }
 

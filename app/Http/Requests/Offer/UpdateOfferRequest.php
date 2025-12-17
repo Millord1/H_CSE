@@ -26,20 +26,20 @@ class UpdateOfferRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => [
-                'required', 
-                'string', 
-                'max:255', 
-                Rule::unique('offers')->ignore($this->route('offer')) 
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('offers')->ignore($this->route('offer')),
             ],
             'image' => [
-                'required', 
+                'required',
                 'image',
                 'file',
                 'mimes:jpeg,png,jpg,webp',
                 'max:2048',
                 'dimensions:min_width=100,min_height=100'],
             'description' => ['nullable', 'string', 'max:255'],
-            'state' => ['required', 'string', 'in:' . implode(',', array_keys(Offer::$states))],
+            'state' => ['required', 'string', 'in:'.implode(',', array_keys(Offer::$states))],
         ];
     }
 }

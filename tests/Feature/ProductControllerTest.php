@@ -32,7 +32,7 @@ class ProductControllerTest extends TestCase
             'sku' => 'PROD-001',
             'price' => 19.99,
             'state' => 'published',
-            'image' => $image
+            'image' => $image,
         ]);
 
         $response->assertRedirect(route('offers.products.index', $this->offer));
@@ -70,13 +70,13 @@ class ProductControllerTest extends TestCase
 
         $product = Product::factory()->create([
             'offer_id' => $this->offer->id,
-            'sku'      => $originalSku,
-            'image'    => $originalImage,
-            'name'     => 'Old name'
+            'sku' => $originalSku,
+            'image' => $originalImage,
+            'name' => 'Old name',
         ]);
         $response = $this->patch(route('offers.products.update', [$this->offer, $product]), [
-            'name'  => 'New name',
-            'sku'   => $originalSku, 
+            'name' => 'New name',
+            'sku' => $originalSku,
             'price' => 25,
             'state' => 'published',
         ]);
@@ -111,17 +111,17 @@ class ProductControllerTest extends TestCase
 
         $product = Product::factory()->create([
             'offer_id' => $this->offer->id,
-            'image' => $imagePath
+            'image' => $imagePath,
         ]);
-        
+
         $response = $this->delete(route('offers.products.destroy', [$this->offer, $product]));
-        
+
         $response->assertRedirect();
         $this->assertDatabaseMissing('products', ['id' => $product->id]);
-        
+
         // Check the file is removed
         $this->assertFalse(
-            Storage::disk('public')->exists($imagePath), 
+            Storage::disk('public')->exists($imagePath),
             "The file hasn't been deleted from the disk"
         );
     }

@@ -26,7 +26,7 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['required', 'string', 'max:255', 'unique:products,sku'],
             'price' => ['required', 'numeric', 'min:0'],
-            'state' => ['required', 'in:' . implode(',', array_keys(Product::$states))],
+            'state' => ['required', 'in:'.implode(',', array_keys(Product::$states))],
             'image' => [
                 'required',
                 'file',
