@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Offer;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -26,7 +27,7 @@ class ProductController extends Controller
         return view('products.create', compact('offer', 'product'));
     }
 
-    public function store(Request $request, string $offerId): RedirectResponse
+    public function store(StoreProductRequest $request, string $offerId): RedirectResponse
     {
         $offer = Offer::findOrFail($offerId);
 
@@ -52,7 +53,7 @@ class ProductController extends Controller
         return view('products.edit', compact('offer', 'product'));
     }
 
-    public function update(Request $request, string $offerId, string $productId): RedirectResponse
+    public function update(UpdateProductRequest $request, string $offerId, string $productId): RedirectResponse
     {
         $offer = Offer::findOrFail($offerId);
         /** @var Product $product */
