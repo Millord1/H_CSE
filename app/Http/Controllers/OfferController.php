@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Offer\StoreOfferRequest;
+use App\Http\Requests\Offer\UpdateOfferRequest;
 use App\Models\Offer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,23 +16,12 @@ class OfferController extends Controller
         return view('offers.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreOfferRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:offers,slug'],
-            'image' => ['required', 'image'],
-            'description' => ['nullable', 'string', 'max:255'],
-            'state' => ['required', 'string', 'in:draft,published,hidden'],
-        ]);
+        $data = $request->validated();
+        $data['image'] = $request->file('image')->store('offers', ['disk' => 'public']);
 
-        Offer::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'image' => $request->image->store('offers', ['disk' => 'public']),
-            'description' => $request->description,
-            'state' => $request->state,
-        ]);
+        Offer::create($data);
 
         return redirect()->route('dashboard');
     }
@@ -42,18 +33,10 @@ class OfferController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $offerId): RedirectResponse
+    public function update(UpdateOfferRequest $request, string $offerId): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'file'],
-            'description' => ['nullable', 'string', 'max:255'],
-            'state' => ['required', 'string', 'in:draft,published,hidden'],
-        ]);
-
         $offer = Offer::findOrFail($offerId);
-        $offer->update($request->all('name', 'slug', 'description', 'state'));
+        $offer->update($request->safe()->except('image'));
 
         if ($request->hasFile('image')) {
             $offer->update([
