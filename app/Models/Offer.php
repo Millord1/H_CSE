@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Offer extends Model
 {
+    use HasFactory;
+
     /** @var array<string, string> */
     public static $states = [
         'draft' => 'Brouillon',
