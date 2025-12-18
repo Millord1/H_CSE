@@ -41,7 +41,7 @@ class OfferControllerTest extends TestCase
 
         $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseHas('offers', ['name' => 'New Offer']);
-        
+
         $offer = Offer::firstOrFail();
         $this->assertTrue(
             Storage::disk('public')->exists($offer->image),
@@ -72,7 +72,7 @@ class OfferControllerTest extends TestCase
         $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseHas('offers', [
             'id' => $offer->id,
-            'name' => 'Modified Name'
+            'name' => 'Modified Name',
         ]);
     }
 
@@ -105,7 +105,7 @@ class OfferControllerTest extends TestCase
     {
         Storage::fake('public');
         $offer = Offer::factory()->create();
-    
+
         $image = UploadedFile::fake()->image('product-to-delete.jpg');
         $path = $image->store('products', 'public');
 
