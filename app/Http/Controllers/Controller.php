@@ -8,6 +8,7 @@ abstract class Controller
 {
     /**
      * Récupère l'utilisateur ou interrompt la requête.
+     *
      * * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
     protected function getUser(Request $request): \App\Models\User

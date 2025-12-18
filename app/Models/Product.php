@@ -2,12 +2,30 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property int $id
+ * @property int $offer_id
+ * @property string $name
+ * @property string $sku
+ * @property string|null $image
+ * @property float $price
+ * @property string $state
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Offer $offer
+ */
 class Product extends Model
 {
-    /** @var array<string,  string> */
+    /** @use HasFactory<ProductFactory> */
+    use HasFactory;
+
+    /** @var array<string, string> */
     public static $states = [
         'draft' => 'Brouillon',
         'published' => 'Publié',
@@ -22,6 +40,15 @@ class Product extends Model
         'price',
         'state',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function ($product) {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+        });
+    }
 
     /**
      * @return BelongsTo<Offer, $this>

@@ -2,12 +2,26 @@
 
 namespace App\Models;
 
+use Database\Factories\OfferFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property string $image
+ * @property string $state
+ */
 class Offer extends Model
 {
+    /** @use HasFactory<OfferFactory> */
+    use HasFactory;
+
     /** @var array<string, string> */
     public static $states = [
         'draft' => 'Brouillon',
@@ -23,12 +37,21 @@ class Offer extends Model
         'state',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function ($offer) {
+            if ($offer->image) {
+                Storage::disk('public')->delete($offer->image);
+            }
+        });
+    }
+
     /**
-     * @param Builder<Offer> $query
-     * @param string $state
+     * @param  Builder<Offer>  $query
+     * @param  string  $state
      * @return Builder<Offer>
      */
-    public function scopeOfState( $query, $state)
+    public function scopeOfState($query, $state)
     {
         return $query->where('state', $state);
     }
