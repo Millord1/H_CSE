@@ -14,71 +14,57 @@ class ProductController extends Controller
 {
     public function __construct(protected ProductRepositoryInterface $productRepository) {}
 
-    public function index(string $offerId): View
+    public function index(Offer $offer): View
     {
-        $offer = Offer::findOrFail($offerId);
         $products = $this->productRepository->paginateByOffer($offer);
 
         return view('products.index', compact('offer', 'products'));
     }
 
-    public function create(string $offerId): View
+    public function create(Offer $offer): View
     {
-        $offer = Offer::findOrFail($offerId);
         $product = new Product;
 
         return view('products.create', compact('offer', 'product'));
     }
 
-    public function store(StoreProductRequest $request, string $offerId): RedirectResponse
+    public function store(StoreProductRequest $request, Offer $offer): RedirectResponse
     {
-        $offer = Offer::findOrFail($offerId);
-
-        /** @var Product $product */
-        $product = $this->productRepository->create($offer, $request->safe()->except('image'));
+        $data = $request->safe()->except('image');
 
         if ($request->hasFile('image')) {
-            // Safe storage with random name (store)
-            $path = $request->file('image')->store('products', 'public');
-            $product->update(['image' => $path]);
+            $data['image'] = $request->file('image')->store('products', 'public');
         }
+
+        $this->productRepository->create($offer, $data);
 
         return redirect()
             ->route('offers.products.index', $offer->id)
             ->with('status', 'Produit créé avec succès.');
     }
 
-    public function edit(string $offerId, string $productId): View
+    public function edit(Offer $offer, Product $product): View
     {
-        $offer = Offer::findOrFail($offerId);
-        $product = $offer->products()->findOrFail($productId);
-
         return view('products.edit', compact('offer', 'product'));
     }
 
-    public function update(UpdateProductRequest $request, string $offerId, string $productId): RedirectResponse
+    public function update(UpdateProductRequest $request, Offer $offer, Product $product): RedirectResponse
     {
-        $offer = Offer::findOrFail($offerId);
-        /** @var Product $product */
-        $product = $offer->products()->findOrFail($productId);
-
-        $this->productRepository->update($product, $request->safe()->except('image'));
+        $data = $request->safe()->except('image');
 
         if ($request->hasFile('image')) {
-            // Safe storage with random name (store)
-            $path = $request->file('image')->store('products', 'public');
-            $product->update(['image' => $path]);
+            $data['image'] = $request->file('image')->store('products', 'public');
         }
+
+        $this->productRepository->update($product, $data);
 
         return redirect()
             ->route('offers.products.index', $offer->id)
             ->with('status', 'Produit mis à jour avec succès.');
     }
 
-    public function destroy(string $offerId, string $productId): RedirectResponse
+    public function destroy(Offer $offer, Product $product): RedirectResponse
     {
-        $offer = Offer::findOrFail($offerId);
-        $product = $offer->products()->findOrFail($productId);
         $this->productRepository->delete($product);
 
         return redirect()
