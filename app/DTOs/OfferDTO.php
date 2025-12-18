@@ -5,6 +5,7 @@ namespace App\DTOs;
 use App\Models\Offer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 readonly class OfferDTO
 {
@@ -12,10 +13,10 @@ readonly class OfferDTO
      * @param int $id
      * @param string $name
      * @param string $slug
-     * @param string|null $description
+     * @param ?string $description
      * @param string $imageUrl
      * @param string $stateLabel
-     * @param Collection<int, ProductDTO>
+     * @param Collection<int, ProductDTO> $products
      */
     public function __construct(
         public int $id,
@@ -39,7 +40,7 @@ readonly class OfferDTO
             description: $offer->description,
             imageUrl: $storage->url($offer->image),
             stateLabel: Offer::$states[$offer->state] ?? $offer->state,
-            products: $offer->relationLoaded('products') 
+            products: $offer->relationLoaded('products')
                 ? $offer->products->map(fn ($product) => ProductDTO::fromModel($product))
                 : collect(),
         );

@@ -16,12 +16,12 @@ class OfferController extends Controller
         protected OfferRepositoryInterface $offerRepository
     ) {}
 
-/*     public function index(): View
-    {
-        return view('offers.index', [
-            'offers' => $this->repository->paginate(10),
-        ]);
-    } */
+    /*     public function index(): View
+        {
+            return view('offers.index', [
+                'offers' => $this->repository->paginate(10),
+            ]);
+        } */
 
     public function create(): View
     {

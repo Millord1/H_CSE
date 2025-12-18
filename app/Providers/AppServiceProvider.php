@@ -21,9 +21,9 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-        OfferRepositoryInterface::class,
-        EloquentOfferRepository::class
-    );
+            OfferRepositoryInterface::class,
+            EloquentOfferRepository::class
+        );
     }
 
     /**

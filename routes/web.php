@@ -15,13 +15,13 @@ Route::get('/dashboard', [DashboardController::class, 'show'])
     ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Resource automatically create all the necessary routes (create, update, store ...)
     Route::resource('offers', OfferController::class)->except(['index']);
-    
+
     // The scoped method verify that the product exists in the offer's scope
     Route::resource('offers.products', ProductController::class)->scoped([
-        'product' => 'id', 
+        'product' => 'id',
     ]);
 
 });

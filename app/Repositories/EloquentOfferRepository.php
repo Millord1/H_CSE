@@ -5,8 +5,8 @@ namespace App\Repositories;
 use App\DTOs\OfferDTO;
 use App\Models\Offer;
 use App\Repositories\Interfaces\OfferRepositoryInterface;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class EloquentOfferRepository implements OfferRepositoryInterface
 {
@@ -28,8 +28,7 @@ class EloquentOfferRepository implements OfferRepositoryInterface
     }
 
     /**
-     * @param array<string, mixed> $data
-     * @return Offer
+     * @param  array<string, mixed>  $data
      */
     public function create(array $data): Offer
     {
@@ -37,9 +36,7 @@ class EloquentOfferRepository implements OfferRepositoryInterface
     }
 
     /**
-     * @param Offer $offer
-     * @param array<string, mixed> $data
-     * @return bool
+     * @param  array<string, mixed>  $data
      */
     public function update(Offer $offer, array $data): bool
     {
@@ -52,7 +49,6 @@ class EloquentOfferRepository implements OfferRepositoryInterface
     }
 
     /**
-     * @param int $perPage
      * @return LengthAwarePaginator<int, OfferDTO>
      */
     public function paginate(int $perPage = 10): LengthAwarePaginator

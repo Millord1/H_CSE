@@ -23,7 +23,6 @@ interface OfferRepositoryInterface
     public function delete(Offer $offer): bool;
 
     /**
-     * @param int $perPage
      * @return LengthAwarePaginator<int, OfferDTO>
      */
     public function paginate(int $perPage = 10): LengthAwarePaginator;
