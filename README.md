@@ -116,6 +116,18 @@ Tests et qualité
 - Lancer les tests: phpunit ou php artisan test
 - Lancer PHPStan: vendor/bin/phpstan analyse --level=8 (ajustez le niveau si vous visez plus)
 
+# Installation
+- Après installation des dépendances, utiliser cette commande pour migrer et run les Seeders:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+ou, si vous avez déjà migré:
+```bash
+php artisan db:seed
+```
+
 # Implémentations
 ## Code Quality
 - En premier lieu j'ai choisi d'intégrer les outils de qualité de code (Pint, PHPStan lvl 8) afin d'obtenir un code 'lissé' et plus simple a refactoriser par la suite
@@ -144,3 +156,37 @@ php vendor/bin/phpstan analyse --no-progress --debug --memory-limit=512M
 ## Création des tests d'intégration
 - Légère refactorisation du test existant en utilisant la fonction setUp() (DRY)
 - Suite à l'implémentation et au changement des Form Requests, les tests d'intégrations étaient indispensables ici
+
+## Création des DTOs
+- Comme demandé et pour respecter les bonnes pratiques, j'ai donc ajouté les DTOs pour Product et Offer (App\DTOs) et les ai implémentés dans les Controllers ce qui le rend plus robustes, dû au readonly de la class
+
+## Création de Repositories
+- J'ai également choisi de créer des Repositories par pragmatisme bien qu'ils ne semblaient pas tout à fait nécessaires pour un projet de cette taille mais ils rendent les Controllers plus clairs et les Requetes plus facilement maintenables
+- J'ai également choisi d'utiliser des Interfaces afin de rendre de potentiels futurs changements de DB plus simples à effectuer et à tester
+
+## Création des Seeders
+- J'ai choisi de créer OfferSeeder uniquement (pas de ProductSeeder) afin d'éviter d'avoir des Products 'orphelins' bien que ce choix reste discutable en fonction du cahier des charges
+- Extraction du code de DatabaseSeeder dans UserSeeder, ce qui est bien plus adapté
+
+| Identifiant | Valeur |
+| :--- | :--- |
+| **Email** | `test@example.com` |
+| **Password** | `password` |
+
+# Ce que j'aurais aimer ajouter
+
+## Plus de tests
+- Avec plus de temps j'aurais commencé par créer des tests pour l'utilisation des Repositories Interface, que l'on peut faker avec des Mocks
+- J'aurais également aimer tester le ProfileController en intégration
+
+## Sécurité
+- Ajouter un système de gestion des droits plus fins avec potentiellement des Roles User, gérés via les Policies de la Class, à priori plus granulaire et donc adapté que des Gates
+
+## Docker
+- Par manque de temps je n'ai pas eu le temps de me pencher sur l'image Docker malgré l'installation de Sail
+
+## Seeders
+- Par manque de temps, j'ai créé les Seeders mais ne peux les tester convenablement, je dois ici arrêter de développer sur ce projet
+
+# Commentaires
+- Ce test technique a été très intéressant à effectuer, aillant consacré environ 6/7h à ce test, 
