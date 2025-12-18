@@ -36,8 +36,8 @@
                                     <tr>
                                         <td class="px-4 py-3">{{ $product->id }}</td>
                                         <td class="px-4 py-3">
-                                            @if($product->image)
-                                                <img src="{{ asset('storage/'.$product->image) }}" alt="Image {{ $product->name }}" class="h-12 w-12 object-cover rounded-md border border-gray-200 dark:border-gray-700">
+                                            @if($product->imageUrl)
+                                                <img src="{{ asset('storage/'.$product->imageUrl) }}" alt="Image {{ $product->name }}" class="h-12 w-12 object-cover rounded-md border border-gray-200 dark:border-gray-700">
                                             @else
                                                 <span class="text-gray-400">—</span>
                                             @endif
@@ -47,7 +47,7 @@
                                         <td class="px-4 py-3">{{ number_format((float)$product->price, 2, ',', ' ') }} €</td>
                                         <td class="px-4 py-3">
                                             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                                {{ \App\Models\Product::$states[$product->state] ?? $product->state }}
+                                                {{ \App\Models\Product::$states[$product->stateKey] ?? $product->stateKey }}
                                             </span>
                                         </td>
                                         <td class="px-4 py-3 text-right whitespace-nowrap">

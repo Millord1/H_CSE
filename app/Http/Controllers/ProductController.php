@@ -6,15 +6,18 @@ use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    public function __construct(protected ProductRepositoryInterface $productRepository) {}
+
     public function index(string $offerId): View
     {
         $offer = Offer::findOrFail($offerId);
-        $products = $offer->products()->latest()->get();
+        $products = $this->productRepository->paginateByOffer($offer);
 
         return view('products.index', compact('offer', 'products'));
     }
@@ -32,7 +35,7 @@ class ProductController extends Controller
         $offer = Offer::findOrFail($offerId);
 
         /** @var Product $product */
-        $product = $offer->products()->create($request->safe()->except('image'));
+        $product = $this->productRepository->create($offer, $request->safe()->except('image'));
 
         if ($request->hasFile('image')) {
             // Safe storage with random name (store)
@@ -59,7 +62,7 @@ class ProductController extends Controller
         /** @var Product $product */
         $product = $offer->products()->findOrFail($productId);
 
-        $product->update($request->safe()->except('image'));
+        $this->productRepository->update($product, $request->safe()->except('image'));
 
         if ($request->hasFile('image')) {
             // Safe storage with random name (store)
@@ -76,7 +79,7 @@ class ProductController extends Controller
     {
         $offer = Offer::findOrFail($offerId);
         $product = $offer->products()->findOrFail($productId);
-        $product->delete();
+        $this->productRepository->delete($product);
 
         return redirect()
             ->route('offers.products.index', $offer->id)
